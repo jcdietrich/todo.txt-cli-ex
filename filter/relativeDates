@@ -77,7 +77,7 @@ function relativeDate(date,      secondsSpan, daySpan, isInFuture) {
     if (daySpan > dayRange) return ""
     else if (daySpan == 0) return "today"
     else if (daySpan == 1) return (isInFuture ? "tomorrow" : "yesterday")
-    else return "(" (isInFuture ? "in " : "") renderDaySpan(daySpan) (isInFuture ? "" : " ago") ")"
+    else return (isInFuture ? "in " : "") renderDaySpan(daySpan) (isInFuture ? "" : " ago")
 }
 function afterSpan(daySpan) {
     if (daySpan == 0) return "from same day"

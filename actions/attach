@@ -50,7 +50,7 @@ getTodo "$item"
     || dateSubdir=''
 dirspec="${TODO_DIR}/attachments/${dateSubdir}"
 
-mkdir --parents -- "$dirspec" || exit 3
+mkdir -p -- "$dirspec" || exit 3
 
 attachments=''
 addAttachment()
