@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################################
 ##
 # FILE:         dopart
@@ -22,14 +22,14 @@ action=$1
 shift
 
 [ "$action" = "usage" ] && {
-    echo "    $(basename $0) ITEM# PART#[, PART#, ...] [COMMENT]"
-    echo "      Marks the part with count PART# (determined by splitting on [,;] and the"
-    echo "      word \"and\") of the line ITEM# as done, optionally appending COMMENT."
-    echo "    $(basename $0) ITEM#"
+    echo "    $(basename $0) NR PART [PART ...] [COMMENT]"
+    echo "      Marks the part with count PART (determined by splitting on [,;] and the"
+    echo "      word \"and\") of the line NR as done, optionally appending COMMENT."
+    echo "    $(basename $0) NR"
     echo "      Lists all parts (determined by splitting on [,;] and the word \"and\")"
-    echo "      of the line ITEM#."
-    echo "    $(basename $0) ITEM# PATTERN [COMMENT]"
-    echo "      Marks the part the line ITEM# that matches PATTERN as done, optionally"
+    echo "      of the line NR."
+    echo "    $(basename $0) NR PATTERN [COMMENT]"
+    echo "      Marks the part the line NR that matches PATTERN as done, optionally"
     echo "      appending COMMENT."
     echo ""
     exit
@@ -91,13 +91,14 @@ doParts()
         # To get the actual text of the parts that were done (including the used
         # separators), substitute the original task again and this time extract
         # the part pattern.
-        changedPart=$(echo "$todo" | ${GNU_PREFIX}sed -E "s#^.*(${partPattern}).*\$
+        donePart=${donePart/&/\\1}
+        changedPart=$(echo "$todo" | ${GNU_PREFIX}sed -E "s#^.*(${partPattern}).*\$#${donePart//#/\\#}#")
         echo "TODO: part of $item marked as done: ${changedPart}"
     fi
 }
 
 
-errmsg="usage: $TODO_SH $(basename $0) ITEM# PART#|PATTERN [COMMENT]"
+errmsg="usage: $TODO_SH $(basename $0) NR PART|PATTERN [COMMENT]"
 item=$1; shift
 [ -z "$item" ] && die "$errmsg"
 [[ "$item" = +([0-9]) ]] || die "$errmsg"

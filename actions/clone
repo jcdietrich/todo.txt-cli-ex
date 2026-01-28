@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################################
 ##
 # FILE:         clone
@@ -11,7 +11,7 @@
 #
 # REMARKS:
 #
-# COPYRIGHT: (C) 2010-2014 Ingo Karkat
+# COPYRIGHT: (C) 2010-2024 Ingo Karkat
 #   This program is free software; you can redistribute it and/or modify it
 #   under the terms of the GNU General Public License.
 #   See http://www.gnu.org/copyleft/gpl.txt
@@ -23,15 +23,16 @@ action=$1
 shift
 
 [ "$action" = "usage" ] && {
-    echo "    $(basename $0) ITEM# [PATTERN REPLACEMENT ...]"
-    echo "      Clones ITEM# into a new task and replaces PATTERN with REPLACEMENT."
+    echo "    $(basename $0) NR [PATTERN REPLACEMENT ...]"
+    echo "      Clones task on line NR into a new task and replaces PATTERN with"
+    echo "      REPLACEMENT."
     echo ""
     exit
 }
 
 shopt -s extglob
 
-errmsg="usage: $TODO_SH $(basename $0) ITEM# [PATTERN REPLACEMENT ...]"
+errmsg="usage: $TODO_SH $(basename $0) NR [PATTERN REPLACEMENT ...]"
 item=$1; shift
 
 [ -z "$item" ] && die "$errmsg"
@@ -55,5 +56,5 @@ if [ -x "$TODO_ACTIONS_DIR/uncomment" ]; then
     "$TODO_FULL_SH" uncomment -q "$clonedItem"
 fi
 if [ $# -gt 0 ]; then
-    "$TODO_FULL_SH" subst $clonedItem "$@"
+    "$TODO_FULL_SH" gsub $clonedItem "$@"
 fi
